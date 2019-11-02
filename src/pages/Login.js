@@ -1,18 +1,28 @@
-import React, {useState} from 'react';
-import {View,Image,KeyboardAvoidingView, Text,TextInput,TouchableOpacity, StyleSheet} from 'react-native';
+import React, {useState,useEffect} from 'react';
+import {View,Image,AsyncStorage,KeyboardAvoidingView, Text,TextInput,TouchableOpacity, StyleSheet} from 'react-native';
 import logo from '../assets/logo.png';
 import api from '../services/api';
 
-export default function Login(){
+export default function Login({navigation}){
 
   const [email, setEmail] = useState('');
   const [tecnologias, setTecnologias] = useState('');
 
+
+  useEffect(()=>{
+    AsyncStorage.getItem('user').then(user =>{
+      if(user){
+        navigation.navigate('List');
+      }
+    })
+  },[])
   async function bandleSubimit(){
       const response = await api.post('/sessions', {email});
       const {_id} = response.data;
-
-      console.log(_id);
+      
+      await AsyncStorage.setItem('user',_id);
+      await AsyncStorage.setItem('tecnologias',tecnologias);
+      navigation.navigate('List');
   }
 
   return (
@@ -79,6 +89,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems:'center',
     borderRadius:2,
+    marginTop: 15
   },
   textButton:{
     color:'#FFF',
