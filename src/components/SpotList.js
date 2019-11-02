@@ -29,12 +29,12 @@ function SpotList({tecnologia, navigation}){
       style={styles.list}
       data={spots} 
       keyExtractor={spot => spot._id}
-      horizontal
+      horizontal 
       showsHorizontalScrollIndicator={false}
       renderItem={({ item }) => (
         <View style={styles.listItem}>
-          <Image style={styles.listItemImagem} source={{uri: item.imagem_url}}/> 
-          <Text style={styles.empresa}>{item.empresa}</Text>
+          <Image style={styles.listItemImagem} source={{uri: item.imagem_url.replace('localhost','192.168.25.169')}}/> 
+          <Text style={styles.empresa}>{item.empresa} </Text>
           <Text style={styles.valor}>{ (item.valor)?`R$${item.valor}/Dia`:'Gratuito'}</Text>
           <TouchableOpacity 
           style={styles.button}
