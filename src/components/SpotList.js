@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import { View,Text, FlatList, Image,TouchableOpacity, StyleSheet } from 'react-native';
+import {withNavigation} from 'react-navigation';
 import api from '../services/api';
-import logo from '../assets/logo.png';
 
-export default function SpotList({tecnologia}){
+function SpotList({tecnologia, navigation}){
   const [spots, setSpots] = useState([]);
 
   useEffect(() =>{
@@ -16,6 +16,9 @@ export default function SpotList({tecnologia}){
     loadSpots();
   },[]);
 
+  function handleNavigate(id){
+    navigation.navigate('Book',{id});
+  }
   return (
     <View style={styles.container} >
       <Text style={styles.title}>Empresas que usam <Text style={styles.textBold}>{tecnologia}.</Text>
@@ -30,19 +33,20 @@ export default function SpotList({tecnologia}){
       showsHorizontalScrollIndicator={false}
       renderItem={({ item }) => (
         <View style={styles.listItem}>
-          <Image style={styles.listItemImagem} source={logo}/> 
+          <Image style={styles.listItemImagem} source={{uri: item.imagem_url}}/> 
           <Text style={styles.empresa}>{item.empresa}</Text>
           <Text style={styles.valor}>{ (item.valor)?`R$${item.valor}/Dia`:'Gratuito'}</Text>
           <TouchableOpacity 
           style={styles.button}
-          onPress={()=>{}}
+          onPress={() => handleNavigate(item._id)}
           >
             <Text style={styles.textButton}>Solicitar reserva</Text>
           </TouchableOpacity>
         </View>
       )}
 
-  />
+  /> 
+  
     </View>
   );
 }
@@ -97,3 +101,5 @@ const styles = StyleSheet.create({
     fontSize: 15
   }
 })
+
+export default withNavigation(SpotList);

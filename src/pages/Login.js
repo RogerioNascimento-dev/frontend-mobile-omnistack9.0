@@ -19,8 +19,10 @@ export default function Login({navigation}){
   async function bandleSubimit(){
       const response = await api.post('/sessions', {email});
       const {_id} = response.data;
+      const {nome} = response.data;
       
       await AsyncStorage.setItem('user',_id);
+      await AsyncStorage.setItem('user_name',nome);
       await AsyncStorage.setItem('tecnologias',tecnologias);
       navigation.navigate('List');
   }
