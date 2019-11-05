@@ -8,7 +8,7 @@ export default function List({ navigation }){
   const [tecnologias, setTecnologias] = useState([]);
   const [user_name, setUser_name] = useState('');
 
-   useEffect(() => {
+   useEffect(() => { 
     async function obterStorageTecnologias(){      
       const tecnologias = await AsyncStorage.getItem('tecnologias');
       const user_name = await AsyncStorage.getItem('user_name');
