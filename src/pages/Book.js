@@ -10,9 +10,11 @@ export default function Book({navigation}){
   
   async function bandleSubimit(){
     const user_id = await AsyncStorage.getItem('user');
-    console.log('[Uid:'+user_id+'] [Data:'+data+'] [idSpot:'+id+']');
+    
     await api.post(`/spots/${id}/bookings`,{
-      data,
+      data
+    },
+    {      
       headers: { user_id }
     });
 
