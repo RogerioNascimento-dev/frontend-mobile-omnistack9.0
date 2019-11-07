@@ -1,5 +1,6 @@
 import React,{ useState, useEffect } from 'react';
-import { SafeAreaView,Text,TouchableOpacity, ScrollView, Image, StyleSheet, AsyncStorage } from 'react-native';
+import { SafeAreaView,Text,TouchableOpacity, ScrollView, Image, StyleSheet, AsyncStorage,Alert } from 'react-native';
+import socketio from 'socket.io-client';
 import logo from '../assets/logo.png';
 import SpotList from '../components/SpotList';
 import { Entypo } from '@expo/vector-icons/'
@@ -19,6 +20,18 @@ export default function List({ navigation }){
      }
      obterStorageTecnologias();    
    },[]);
+
+   useEffect(() =>{
+    AsyncStorage.getItem('user')
+    .then(user_id =>{
+      const socket = socketio('http://192.168.25.169:3333', {
+        query: { user_id }
+      })
+      socket.on('booking_response', booking => {
+        Alert.alert('Atenção',`Sua reserva em ${booking.spot.empresa} em ${booking.data} foi ${booking.aprovado ? 'APROVADO': 'REJEITADO'}`)
+      })
+    })
+   }, []);
 
    async function handleLogout(){    
     await AsyncStorage.clear();
